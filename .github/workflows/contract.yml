@@ -1,0 +1,31 @@
+name: bila-core contract
+
+on:
+  push:
+    paths: ["contracts/**", ".github/workflows/contract.yml"]
+  workflow_dispatch:
+
+jobs:
+  test-and-build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: contracts/bila-core
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@1.86.0
+        with:
+          targets: wasm32-unknown-unknown
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: contracts/bila-core
+      - name: Install cargo-near
+        run: curl --proto '=https' --tlsv1.2 -LsSf https://github.com/near/cargo-near/releases/latest/download/cargo-near-installer.sh | sh
+      - name: Unit tests
+        run: cargo test
+      - name: Build wasm
+        run: cargo near build non-reproducible-wasm
+      - uses: actions/upload-artifact@v4
+        with:
+          name: bila_core.wasm
+          path: contracts/bila-core/target/near/bila_core.wasm
