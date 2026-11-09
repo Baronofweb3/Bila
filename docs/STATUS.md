@@ -11,23 +11,21 @@ Deadline: **2026-11-14**
 - [x] `@bila/near-client` (typed chain interface, near-api-js adapter, owner-tx preparers) — typechecks; **not run against a live RPC** (blocked in sandbox).
 - [x] `@bila/mcp-server` (Streamable HTTP, bearer auth, role-scoped tools, AES-GCM key vault) — 10 tests: tool surface, agent isolation, owner scoping, 401s, token revocation.
 
-## Verified live on NEAR testnet (2026-11-07, earlier deployment; renamed to neutral accounts 2026-11-09, re-verification pending)
-- [x] wasm built in GitHub Actions (CI green), deployed to `bilacore-baron.testnet`, `new` init OK
-- [x] Owner `bila-owner-baron.testnet` deposited 3 NEAR; storage deposit; agent `bila-agent-baron.testnet` registered (id 1)
-- [x] In-limit payment (0.2 NEAR) → `settled` (reserved then settled, real transfer receipt)
-- [x] Over per-tx limit (0.9 NEAR vs 0.5 cap) → `rejected: exceeds_max_transaction`
+## Verified live on NEAR testnet (2026-11-09, neutral accounts)
+- [x] Contract `bila-treasury-01.testnet`, owner `bila-owner-01.testnet`, agent `bila-agent-01.testnet`
+- [x] Owner deposit, agent registered with a function-call key limited to `request_payment`
+- [x] Hosted MCP endpoint on Vercel used from Claude as a custom connector (budget check, payments, history)
+- [x] 2 payments of 0.2 NEAR settled; receipt confirmed in recipient wallet via NearBlocks (Receipts tab)
+- [x] 0.9 NEAR vs 0.5 cap rejected: `exceeds_max_transaction`
+- [x] Dashboard live at https://bila-psi.vercel.app (treasury, settled, blocked counts match chain)
 
 ## Not yet verified
 - [ ] Sandbox integration tests (near-workspaces)
-- [ ] Remaining scenarios live: daily/weekly/monthly caps, duplicate id, pause/revoke, withdraw of reserved funds
-- [ ] near-client / MCP server against live testnet
+- [ ] Live: daily/weekly/monthly caps, duplicate id, pause/revoke, withdraw of reserved funds (unit-tested only)
+- [ ] ChatGPT connector (depends on plan)
 
-## Accounts
-- GitHub: `baronofweb3/Bila` (created, empty). Testnet: `agentbilla.testnet`.
-
-## Blockers
-1. This session has no GitHub access to the repo (`add_repo` not granted) → cannot push or run CI.
-2. Real chain calls from MCP (near-client) untested until testnet is reachable.
+## Notes
+- The demo agent token sits in the connector URL. Rotate it after the hackathon.
 
 ## Design decisions
 - Units: yoctoNEAR integers; limits in NEAR. No oracle in MVP.
