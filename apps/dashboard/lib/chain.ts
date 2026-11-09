@@ -1,5 +1,5 @@
-export const CONTRACT = process.env.NEXT_PUBLIC_BILA_CONTRACT_ID ?? "bilacore-baron.testnet";
-export const DEFAULT_OWNER = process.env.NEXT_PUBLIC_BILA_OWNER ?? "bila-owner-baron.testnet";
+export const CONTRACT = process.env.NEXT_PUBLIC_BILA_CONTRACT_ID ?? "bila-treasury-01.testnet";
+export const DEFAULT_OWNER = process.env.NEXT_PUBLIC_BILA_OWNER ?? "bila-owner-01.testnet";
 const RPCS = [
   "https://test.rpc.fastnear.com",
   "https://rpc.testnet.near.org",

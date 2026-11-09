@@ -30,3 +30,11 @@ export const REASONS: Record<string, string> = {
   unregistered_agent: "Agent is not registered",
   recipient_not_allowed: "Recipient is not on the allowlist",
 };
+
+const MASK = process.env.NEXT_PUBLIC_BILA_MASK !== "0";
+/** Hides account names on screen by default (the chain itself stays public). */
+export function mask(id: string): string {
+  if (!MASK) return id;
+  const dot = id.lastIndexOf(".");
+  return dot > 0 ? `${id.slice(0, 3)}•••${id.slice(dot)}` : `${id.slice(0, 3)}•••`;
+}

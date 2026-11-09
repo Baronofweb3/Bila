@@ -11,7 +11,7 @@ Deadline: **2026-11-14**
 - [x] `@bila/near-client` (typed chain interface, near-api-js adapter, owner-tx preparers) — typechecks; **not run against a live RPC** (blocked in sandbox).
 - [x] `@bila/mcp-server` (Streamable HTTP, bearer auth, role-scoped tools, AES-GCM key vault) — 10 tests: tool surface, agent isolation, owner scoping, 401s, token revocation.
 
-## Verified live on NEAR testnet (2026-11-07)
+## Verified live on NEAR testnet (2026-11-07, earlier deployment; renamed to neutral accounts 2026-11-09, re-verification pending)
 - [x] wasm built in GitHub Actions (CI green), deployed to `bilacore-baron.testnet`, `new` init OK
 - [x] Owner `bila-owner-baron.testnet` deposited 3 NEAR; storage deposit; agent `bila-agent-baron.testnet` registered (id 1)
 - [x] In-limit payment (0.2 NEAR) → `settled` (reserved then settled, real transfer receipt)

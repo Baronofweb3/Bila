@@ -10,7 +10,13 @@
   "dependencies": {
     "next": "16.4.5",
     "react": "19.2.0",
-    "react-dom": "19.2.0"
+    "react-dom": "19.2.0",
+    "@bila/mcp-server": "workspace:*",
+    "@bila/near-client": "workspace:*",
+    "@bila/shared": "workspace:*",
+    "@modelcontextprotocol/sdk": "1.32.2",
+    "near-api-js": "7.4.0",
+    "zod": "4.6.7"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "4.1.0",

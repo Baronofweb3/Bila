@@ -44,8 +44,9 @@ cargo near build non-reproducible-wasm     # needs wasm32 target (CI does this)
 
 ## Live on NEAR testnet
 
-- Contract: `bilacore-baron.testnet`
+- Contract: `bila-treasury-01.testnet`
 - Verified on chain: owner deposit, agent registration, an in-limit payment that settled, and an over-limit payment that the contract rejected (`exceeds_max_transaction`).
 - Architecture: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)
+- Plug into Claude or ChatGPT: [docs/CONNECT.md](docs/CONNECT.md)
 
 See [docs/STATUS.md](docs/STATUS.md) for progress and blockers.

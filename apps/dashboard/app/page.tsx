@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { CONTRACT, DEFAULT_OWNER, loadAll, type Agent, type Owner, type Payment } from "@/lib/chain";
-import { fmtNear, fmtTime, pct } from "@/lib/format";
+import { fmtNear, fmtTime, mask, pct } from "@/lib/format";
 
 type Tab = "overview" | "agents" | "transactions";
 
@@ -46,7 +46,7 @@ function AgentCard({ a }: { a: Agent }) {
       <div className="flex items-center justify-between">
         <div>
           <div className="text-lg font-semibold">{a.name}</div>
-          <div className="text-xs text-[var(--muted)]">{a.account}</div>
+          <div className="text-xs text-[var(--muted)]">{mask(a.account)}</div>
         </div>
         <Status s={a.status} />
       </div>
@@ -61,7 +61,7 @@ function AgentCard({ a }: { a: Agent }) {
         <div><div className="text-xs text-[var(--muted)]">Blocked</div>{a.rejected_count}</div>
       </div>
       <div className="mt-3 text-xs text-[var(--muted)]">
-        Recipients: {a.policy.allowed_recipients ? a.policy.allowed_recipients.join(", ") : "any (except itself and the contract)"}
+        Recipients: {a.policy.allowed_recipients ? a.policy.allowed_recipients.map(mask).join(", ") : "any (except itself and the contract)"}
       </div>
     </div>
   );
@@ -81,7 +81,7 @@ function PaymentsTable({ payments, agents }: { payments: Payment[]; agents: Agen
             <tr key={p.id} className="border-t border-[var(--line)]">
               <td className="p-4 whitespace-nowrap">{fmtTime(p.created_at)}</td>
               <td className="p-4">{name(p.agent_id)}</td>
-              <td className="p-4">{p.recipient}</td>
+              <td className="p-4">{mask(p.recipient)}</td>
               <td className="p-4 whitespace-nowrap">{fmtNear(p.amount)} NEAR</td>
               <td className="p-4 text-[var(--muted)]">{p.memo ?? "—"}</td>
               <td className="p-4"><Status s={p.status} /></td>
@@ -96,7 +96,6 @@ function PaymentsTable({ payments, agents }: { payments: Payment[]; agents: Agen
 export default function Page() {
   const [tab, setTab] = useState<Tab>("overview");
   const [ownerId, setOwnerId] = useState(DEFAULT_OWNER);
-  const [input, setInput] = useState(DEFAULT_OWNER);
   const [owner, setOwner] = useState<Owner | null>(null);
   const [agents, setAgents] = useState<Agent[]>([]);
   const [payments, setPayments] = useState<Payment[]>([]);
@@ -109,6 +108,11 @@ export default function Page() {
       setOwner(d.owner); setAgents(d.agents); setPayments(d.payments); setErr(null);
     } catch (e) { setErr(e instanceof Error ? e.message : String(e)); }
     finally { setLoading(false); }
+  }, [ownerId]);
+
+  useEffect(() => {
+    const o = new URLSearchParams(window.location.search).get("owner");
+    if (o && o !== ownerId) setOwnerId(o);
   }, [ownerId]);
 
   useEffect(() => {
@@ -130,11 +134,6 @@ export default function Page() {
             <div className="text-xs text-[var(--muted)]">Your agents. Your money. Your rules.</div>
           </div>
         </div>
-        <form className="flex gap-2" onSubmit={(e) => { e.preventDefault(); setOwnerId(input.trim()); }}>
-          <input value={input} onChange={(e) => setInput(e.target.value)} placeholder="owner account"
-            className="w-64 rounded-lg border border-[var(--line)] bg-[var(--card)] px-3 py-2 text-sm outline-none focus:border-[var(--bila)]" />
-          <button className="rounded-lg px-4 py-2 text-sm font-medium" style={{ background: "var(--bila)" }}>View</button>
-        </form>
       </header>
 
       <nav className="mt-6 flex gap-1 border-b border-[var(--line)]">
@@ -150,7 +149,7 @@ export default function Page() {
         {err && <div className="card border-red-500/40 p-4 text-sm text-red-300">Could not read the chain: {err}</div>}
         {loading && !err && <div className="text-sm text-[var(--muted)]">Reading the chain…</div>}
         {!loading && !err && !owner && (
-          <div className="card p-6 text-sm text-[var(--muted)]">{ownerId} has no treasury on this contract yet.</div>
+          <div className="card p-6 text-sm text-[var(--muted)]">No treasury found for this owner yet.</div>
         )}
 
         {owner && tab === "overview" && (
@@ -174,7 +173,7 @@ export default function Page() {
       </div>
 
       <footer className="mt-12 text-xs text-[var(--muted)]">
-        Reading live from <span className="text-white">{CONTRACT}</span> on NEAR testnet. Limits are enforced by the contract, not by this page.
+        Reading live from <span className="text-white">{mask(CONTRACT)}</span> on NEAR testnet. Limits are enforced by the contract, not by this page.
       </footer>
     </main>
   );
