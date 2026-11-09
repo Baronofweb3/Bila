@@ -1,0 +1,11 @@
+node_modules/
+.next/
+dist/
+target/
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+.near-credentials/
+.DS_Store
