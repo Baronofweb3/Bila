@@ -28,9 +28,9 @@ All amounts are integer yoctoNEAR. The MVP denominates limits in **NEAR** — no
 
 ```
 contracts/bila-core   Rust contract (near-sdk 5.30) + unit tests
-packages/mcp-server   MCP server (TypeScript)            — Phase 4
-packages/near-client  Typed contract client              — Phase 4
-apps/dashboard        Next.js dashboard                  — Phase 5
+packages/mcp-server   MCP server (TypeScript, Streamable HTTP)
+packages/near-client  Typed contract client
+apps/dashboard        Next.js dashboard (live read from the contract)
 docs/                 Architecture, status, brand
 ```
 
@@ -41,5 +41,11 @@ cd contracts/bila-core
 cargo test                                 # runs the enforcement suite
 cargo near build non-reproducible-wasm     # needs wasm32 target (CI does this)
 ```
+
+## Live on NEAR testnet
+
+- Contract: `bilacore-baron.testnet`
+- Verified on chain: owner deposit, agent registration, an in-limit payment that settled, and an over-limit payment that the contract rejected (`exceeds_max_transaction`).
+- Architecture: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)
 
 See [docs/STATUS.md](docs/STATUS.md) for progress and blockers.

@@ -1,0 +1,5 @@
+@import "tailwindcss";
+
+:root { --bila: #0700fe; --bg: #07070d; --card: #0f0f1a; --line: #1e1e30; --muted: #8b8ba3; }
+body { background: var(--bg); color: #f2f2f8; font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif; }
+.card { background: var(--card); border: 1px solid var(--line); border-radius: 14px; }

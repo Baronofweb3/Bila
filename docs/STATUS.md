@@ -11,10 +11,16 @@ Deadline: **2026-11-14**
 - [x] `@bila/near-client` (typed chain interface, near-api-js adapter, owner-tx preparers) — typechecks; **not run against a live RPC** (blocked in sandbox).
 - [x] `@bila/mcp-server` (Streamable HTTP, bearer auth, role-scoped tools, AES-GCM key vault) — 10 tests: tool surface, agent isolation, owner scoping, 401s, token revocation.
 
+## Verified live on NEAR testnet (2026-11-07)
+- [x] wasm built in GitHub Actions (CI green), deployed to `bilacore-baron.testnet`, `new` init OK
+- [x] Owner `bila-owner-baron.testnet` deposited 3 NEAR; storage deposit; agent `bila-agent-baron.testnet` registered (id 1)
+- [x] In-limit payment (0.2 NEAR) → `settled` (reserved then settled, real transfer receipt)
+- [x] Over per-tx limit (0.9 NEAR vs 0.5 cap) → `rejected: exceeds_max_transaction`
+
 ## Not yet verified
-- [ ] wasm build (`static.rust-lang.org` blocked in the dev sandbox → runs in GitHub Actions)
-- [ ] Sandbox integration tests (near-workspaces) — real cross-contract receipts, `#[private]` wrapper, gas
-- [ ] Testnet deployment
+- [ ] Sandbox integration tests (near-workspaces)
+- [ ] Remaining scenarios live: daily/weekly/monthly caps, duplicate id, pause/revoke, withdraw of reserved funds
+- [ ] near-client / MCP server against live testnet
 
 ## Accounts
 - GitHub: `baronofweb3/Bila` (created, empty). Testnet: `agentbilla.testnet`.
