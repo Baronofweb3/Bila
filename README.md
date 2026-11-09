@@ -42,11 +42,21 @@ cargo test                                 # runs the enforcement suite
 cargo near build non-reproducible-wasm     # needs wasm32 target (CI does this)
 ```
 
-## Live on NEAR testnet
+## Live demo (NEAR testnet)
 
+- Dashboard: https://bila-psi.vercel.app
 - Contract: `bila-treasury-01.testnet`
-- Verified on chain: owner deposit, agent registration, an in-limit payment that settled, and an over-limit payment that the contract rejected (`exceeds_max_transaction`).
-- Architecture: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)
-- Plug into Claude or ChatGPT: [docs/CONNECT.md](docs/CONNECT.md)
+- Agent connects to BILA through MCP, so Claude (or any MCP client) can use it as a custom connector. Steps: [docs/CONNECT.md](docs/CONNECT.md)
 
-See [docs/STATUS.md](docs/STATUS.md) for progress and blockers.
+What was run end to end with Claude as the agent:
+
+| Request | Result |
+|---|---|
+| Check budget | Limits and remaining balance returned from the contract |
+| Pay 0.2 NEAR | Reserved, then settled on chain |
+| Pay 0.2 NEAR again | Settled (new request id) |
+| Pay 0.9 NEAR (cap is 0.5) | Rejected by the contract: `exceeds_max_transaction` |
+
+The agent holds a function-call key that can only call `request_payment`. It cannot move funds on its own, attach a deposit, or change its own limits.
+
+More: [Architecture](docs/ARCHITECTURE.md) · [Status and limits](docs/STATUS.md)
